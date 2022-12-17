@@ -123,12 +123,12 @@
         ```
     - Response
         - __error__: `any`, if error occured
+        - __isSuccess__: `boolean`
         - __memoId__: `number`
-        - __createdDate__: `datetime`
         ```json
         {
+            "isSuccess": true,
             "memoId": 1,
-            "createdDate": "",
         }
 
         // error
