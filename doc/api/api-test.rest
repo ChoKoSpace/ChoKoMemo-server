@@ -1,0 +1,12 @@
+@base-url = {{$dotenv %URL}}:{{$dotenv %PORT}}
+
+###
+{{base-url}}/status
+
+###
+POST {{base-url}}/api/chokomemo/login
+content-type: application/json
+
+{
+    "loginId": "{{$dotenv %ID}}"
+}
