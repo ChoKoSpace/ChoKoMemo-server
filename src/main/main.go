@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/ChoKoSpace/ChoKoMemo-server/src/config"
 )
 
 type ErrorObject struct {
@@ -115,5 +117,5 @@ func main() {
 	mux.HandleFunc("/", indexPage)
 	mux.HandleFunc("/status", healthCheck)
 	mux.HandleFunc("/api/chokomemo/", mainRounter)
-	http.ListenAndServe(":3901", mux)
+	http.ListenAndServe(config.Port, mux)
 }
