@@ -89,13 +89,13 @@
         - __title__: `string`
         - __content__: `string`
         - __createdDate__: `datetime`
-        - __modifiedDate__: `datetime`
+        - __lastUpdatedDate__: `datetime`
         ```json
         {
             "title": "memo-title",
             "content": "blah blah",
             "createdDate": "",
-            "modifiedDate": ""
+            "lastUpdatedDate": ""
         }
 
         // error
