@@ -25,6 +25,9 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	api.InitDB()
+	api.GetFromDB()
+
 	mux := http.NewServeMux()
 	mux.HandleFunc("/status", healthCheck)
 	mux.HandleFunc("/api/chokomemo/", apiRounter)
