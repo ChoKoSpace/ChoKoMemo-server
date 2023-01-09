@@ -17,6 +17,8 @@ func apiRounter(w http.ResponseWriter, r *http.Request) {
 		api.Login(w, r)
 	case "/all-memos":
 		api.GetAllMemoList(w, r)
+	case "/db-test":
+		api.Db_test(w, r)
 	}
 }
 
@@ -26,10 +28,9 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	api.InitDB()
-	api.GetFromDB()
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/status", healthCheck)
 	mux.HandleFunc("/api/chokomemo/", apiRounter)
-	http.ListenAndServe(config.Port, mux)
+	http.ListenAndServe(config.PORT, mux)
 }

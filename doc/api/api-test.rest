@@ -1,12 +1,31 @@
 @base-url = {{$dotenv %URL}}:{{$dotenv %PORT}}
+@api-url = {{base-url}}/api/chokomemo
 
 ###
 {{base-url}}/status
 
 ###
-POST {{base-url}}/api/chokomemo/login
+POST {{api-url}}/login
 content-type: application/json
 
 {
     "loginId": "{{$dotenv %ID}}"
+}
+
+# DB-TEST
+
+###
+GET {{api-url}}/db-test
+content-type: application/json
+
+{
+}
+
+###
+POST {{api-url}}/db-test
+content-type: application/json
+
+{
+    "Title": "memo-title",
+    "Content": "blah blah"
 }

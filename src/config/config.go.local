@@ -1,5 +1,5 @@
 package config
 
-const Port string = ":"
+const PORT string = ":"
 
-const Dsn string = ""
+const DSN string = ""
