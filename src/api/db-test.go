@@ -5,16 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ChoKoSpace/ChoKoMemo-server/src/config"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/ChoKoSpace/ChoKoMemo-server/src/model"
 )
-
-type Memo struct {
-	gorm.Model
-	Title   string `gorm:"not null"`
-	Content string `gorm:"not null"`
-}
 
 type TempResponseJson struct {
 	Id      uint   `json:"memoId"`
@@ -22,21 +14,13 @@ type TempResponseJson struct {
 	Content string `json:"content"`
 }
 
-var db *gorm.DB
-
-func InitDB() {
-	var err error = nil
-	db, err = gorm.Open(mysql.Open(config.DSN), &gorm.Config{})
-	if err != nil {
-		panic(err)
-	}
-
-	db.Exec("CREATE DATABASE IF NOT EXISTS CHOKO_MEMO").Exec("USE CHOKO_MEMO")
-	db.AutoMigrate(&Memo{})
-}
-
 func Db_test(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("DB-Test %v\n", r.Method)
+
+	db := model.GetDB()
+	if db == nil {
+		panic("no DB")
+	}
 
 	switch r.Method {
 	default:
@@ -46,7 +30,7 @@ func Db_test(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("content-type", "application/json")
 		w.WriteHeader(http.StatusOK)
 
-		var memos []Memo
+		var memos []model.Memo
 
 		result := db.Find(&memos)
 		var Response = make([]TempResponseJson, result.RowsAffected)
@@ -62,13 +46,13 @@ func Db_test(w http.ResponseWriter, r *http.Request) {
 
 	case http.MethodPost:
 		decoder := json.NewDecoder(r.Body)
-		var Request Memo
+		var Request model.Memo
 		decoder.Decode(&Request)
 
 		w.Header().Add("content-type", "application/json")
 		w.WriteHeader(http.StatusOK)
 
-		newMemo := Memo{Title: Request.Title, Content: Request.Content}
+		newMemo := model.Memo{Title: Request.Title, Content: Request.Content}
 		db.Create(&newMemo)
 		fmt.Printf("[DB-TEST] Create Memo %v", newMemo)
 

@@ -5,6 +5,7 @@ import (
 
 	"github.com/ChoKoSpace/ChoKoMemo-server/src/api"
 	"github.com/ChoKoSpace/ChoKoMemo-server/src/config"
+	"github.com/ChoKoSpace/ChoKoMemo-server/src/model"
 )
 
 func apiRounter(w http.ResponseWriter, r *http.Request) {
@@ -27,7 +28,7 @@ func healthCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	api.InitDB()
+	model.InitializeDB()
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/status", healthCheck)

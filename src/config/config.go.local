@@ -3,3 +3,5 @@ package config
 const PORT string = ":"
 
 const DSN string = ""
+
+const NAME_DATABASE string = ""
