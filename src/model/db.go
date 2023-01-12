@@ -11,6 +11,9 @@ import (
 var db *gorm.DB
 
 func GetDB() *gorm.DB {
+	if db == nil {
+		panic("DB is not initialized.")
+	}
 	return db
 }
 
@@ -24,5 +27,6 @@ func InitializeDB() {
 	db.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s;", config.NAME_DATABASE))
 	db.Exec(fmt.Sprintf("USE %s;", config.NAME_DATABASE))
 
+	db.AutoMigrate(&UserInfo{})
 	db.AutoMigrate(&Memo{})
 }

@@ -1,6 +1,9 @@
 package main
 
 import (
+	"crypto/rand"
+	"crypto/sha512"
+	"encoding/hex"
 	"net/http"
 
 	"github.com/ChoKoSpace/ChoKoMemo-server/src/api"
@@ -25,6 +28,26 @@ func apiRounter(w http.ResponseWriter, r *http.Request) {
 
 func healthCheck(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
+}
+
+func temp_AddUser(loginId string, password string) {
+	salt := make([]byte, 16)
+	_, err := rand.Read(salt)
+	if err != nil {
+		panic("Failed to generate salt")
+	}
+
+	sha := sha512.New()
+	passwordBytes := append([]byte(password), salt...)
+	sha.Write(passwordBytes)
+	hash := sha.Sum(nil)
+
+	newUserInfo := model.UserInfo{}
+	newUserInfo.LoginId = loginId
+	newUserInfo.HashedPassword = hex.EncodeToString(hash)
+	newUserInfo.Salt = hex.EncodeToString(salt)
+
+	model.GetDB().Create(&newUserInfo)
 }
 
 func main() {

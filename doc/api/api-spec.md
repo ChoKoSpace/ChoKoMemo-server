@@ -13,9 +13,11 @@
     - `POST`
     - Request
         - __loginId__: `string`
+        - __password__: `string`
         ```json
         {
-            "loginId": "1",
+            "loginId": "testId",
+            "password": "password"
         }
         ```
     - Response

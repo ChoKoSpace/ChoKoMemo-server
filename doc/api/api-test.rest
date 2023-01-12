@@ -9,7 +9,8 @@ POST {{api-url}}/login
 content-type: application/json
 
 {
-    "loginId": "{{$dotenv %ID}}"
+    "loginId": "{{$dotenv %LoginId}}",
+    "password": "{{$dotenv %Password}}"
 }
 
 # DB-TEST
