@@ -5,11 +5,20 @@
 {{base-url}}/status
 
 ###
-POST {{api-url}}/login
+POST {{api-url}}/signup
 content-type: application/json
 
 {
-    "loginId": "{{$dotenv %LoginId}}",
+    "accountId": "{{$dotenv %AccountId}}",
+    "password": "{{$dotenv %Password}}"
+}
+
+###
+POST {{api-url}}/signin
+content-type: application/json
+
+{
+    "accountId": "{{$dotenv %AccountId}}",
     "password": "{{$dotenv %Password}}"
 }
 

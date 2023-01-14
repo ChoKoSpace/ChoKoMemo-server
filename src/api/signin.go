@@ -11,34 +11,34 @@ import (
 	"github.com/ChoKoSpace/ChoKoMemo-server/src/session"
 )
 
-type LoginRequestJson struct {
-	LoginId  string `json:"loginId"`
-	Password string `json:"password"`
+type SigninRequestJson struct {
+	AccountId string `json:"accountId"`
+	Password  string `json:"password"`
 }
 
-type LoginResponseJson struct {
+type SigninResponseJson struct {
 	Error  *ErrorObject `json:"error,omitempty"`
 	UserId *string      `json:"userId,omitempty"`
 	Token  *string      `json:"token,omitempty"`
 }
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func Signin(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	default:
 		http.NotFound(w, r)
 
 	case http.MethodPost:
 		decoder := json.NewDecoder(r.Body)
-		var Request LoginRequestJson
+		var Request SigninRequestJson
 		decoder.Decode(&Request)
 
 		w.Header().Add("content-type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		var Response = LoginResponseJson{}
+		var Response = SigninResponseJson{}
 
 		var targetUser model.UserInfo
 		db := model.GetDB()
-		db.First(&targetUser, "login_Id = ?", Request.LoginId)
+		db.First(&targetUser, "account_id = ?", Request.AccountId)
 
 		saltBytes, err := hex.DecodeString(targetUser.Salt)
 		if err != nil {

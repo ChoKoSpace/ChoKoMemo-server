@@ -7,16 +7,43 @@
 
 # API
 
-### Login
-- Login (Token 발행)
-- /api/chokomemo/login
+### Signup
+ - 신규 회원가입
+ - /api/chokomemo/signup
     - `POST`
-    - Request
-        - __loginId__: `string`
+    - Requeest
+        - __accountId__: `string`
         - __password__: `string`
         ```json
         {
-            "loginId": "testId",
+            "accountId": "testId",
+            "password": "password"
+        }
+        ```
+    - Response
+        - __error__: `any`, if error occured
+        - __isSuccess__: `boolean`
+        ```json
+        {
+            "isSuccess": true
+        }
+
+        // error
+        {
+            "error": { "message": "..." }
+        }
+        ```
+
+### Singin
+- 로그인 (Token 발행)
+- /api/chokomemo/signin
+    - `POST`
+    - Request
+        - __accountId__: `string`
+        - __password__: `string`
+        ```json
+        {
+            "accountId": "testId",
             "password": "password"
         }
         ```

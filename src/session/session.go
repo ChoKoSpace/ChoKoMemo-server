@@ -37,9 +37,6 @@ func IsValidToken(userId string, token string) bool {
 	}
 
 	if session.Token == token {
-		fmt.Println("token equal")
-		fmt.Printf("[Session]-> expiresAt: %v", session.ExpiresAt)
-
 		if time.Now().Before(session.ExpiresAt) {
 			return true
 		}

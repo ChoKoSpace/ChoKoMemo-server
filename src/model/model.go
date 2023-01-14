@@ -8,7 +8,7 @@ import (
 
 type UserInfo struct {
 	gorm.Model
-	LoginId        string `gorm:"not null;unique"`
+	AccountId      string `gorm:"not null;unique"`
 	HashedPassword string `gorm:"not null;"`
 	Salt           string `gorm:"not null;"`
 }
