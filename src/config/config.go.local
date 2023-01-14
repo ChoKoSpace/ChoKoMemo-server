@@ -5,3 +5,6 @@ const PORT string = ":"
 const DSN string = ""
 
 const NAME_DATABASE string = ""
+
+// sec
+const TOKEN_LIFETIME = 30

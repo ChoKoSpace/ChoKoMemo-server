@@ -13,6 +13,15 @@ content-type: application/json
     "password": "{{$dotenv %Password}}"
 }
 
+###
+GET {{api-url}}/all-memos
+content-type: application/json
+
+{
+    "userId": "1",
+    "token": "5bd57cdef6df9c8e9cf5aad4230b58a9bae34ca023d6efc009357d838baae2f2"
+}
+
 # DB-TEST
 
 ###

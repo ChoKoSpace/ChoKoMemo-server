@@ -28,5 +28,6 @@ func InitializeDB() {
 	db.Exec(fmt.Sprintf("USE %s;", config.NAME_DATABASE))
 
 	db.AutoMigrate(&UserInfo{})
+	db.AutoMigrate(&Session{})
 	db.AutoMigrate(&Memo{})
 }
