@@ -13,36 +13,32 @@ type MemoListInfo struct {
 	Title  string `json:"title"`
 }
 
-type GetAllMemoListRequestJson struct {
+type GetAllMemoRequestJson struct {
 	UserId string `json:"userId"`
 	Token  string `json:"token"`
 }
 
-type GetAllMemoListResponseJson struct {
+type GetAllMemoResponseJson struct {
 	Error    *ErrorObject    `json:"error,omitempty"`
 	MemoList *[]MemoListInfo `json:"memoList,omitempty"`
 }
 
-func GetAllMemoList(w http.ResponseWriter, r *http.Request) {
+func AllMemo(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	default:
 		http.NotFound(w, r)
 
 	case http.MethodGet:
 		decoder := json.NewDecoder(r.Body)
-		var Request GetAllMemoListRequestJson
+		var Request GetAllMemoRequestJson
 		decoder.Decode(&Request)
 
 		w.Header().Add("content-type", "application/json")
 		w.WriteHeader(http.StatusOK)
 
-		var Response = GetAllMemoListResponseJson{}
+		var Response = GetAllMemoResponseJson{}
 
-		if !session.IsValidToken(Request.UserId, Request.Token) {
-			errorObj := ErrorObject{}
-			errorObj.Message = "Invalid token"
-			Response.Error = &errorObj
-		} else {
+		if session.IsValidToken(Request.UserId, Request.Token) {
 			session.RefreshSession(Request.UserId)
 			//test response
 			countOfMemos := 3
@@ -52,9 +48,12 @@ func GetAllMemoList(w http.ResponseWriter, r *http.Request) {
 				newMemoList[i].Title = "memo-title"
 			}
 			Response.MemoList = &newMemoList
+		} else {
+			errorObj := ErrorObject{}
+			errorObj.Message = "Invalid token"
+			Response.Error = &errorObj
+			data, _ := json.MarshalIndent(Response, "", "    ")
+			fmt.Fprintf(w, string(data))
 		}
-
-		data, _ := json.MarshalIndent(Response, "", "    ")
-		fmt.Fprintf(w, string(data))
 	}
 }

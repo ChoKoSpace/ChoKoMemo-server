@@ -19,9 +19,9 @@ func apiRounter(w http.ResponseWriter, r *http.Request) {
 	case "/signin":
 		api.Signin(w, r)
 	case "/all-memos":
-		api.GetAllMemoList(w, r)
-	case "/db-test":
-		api.Db_test(w, r)
+		api.AllMemo(w, r)
+	case "/memo":
+		api.Memo(w, r)
 	}
 }
 

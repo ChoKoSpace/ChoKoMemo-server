@@ -15,13 +15,14 @@ type UserInfo struct {
 
 type Session struct {
 	gorm.Model
-	UserID    int       `json:"user_id"`
-	Token     string    `json:"token"`
-	ExpiresAt time.Time `json:"expires_at"`
+	UserID    int       `gorm:"not null" json:"user_id"`
+	Token     string    `gorm:"not null" json:"token"`
+	ExpiresAt time.Time `gorm:"not null" json:"expires_at"`
 }
 
 type Memo struct {
 	gorm.Model
+	UserId  string `gorm:"not null"`
 	Title   string `gorm:"not null"`
 	Content string `gorm:"not null"`
 }
