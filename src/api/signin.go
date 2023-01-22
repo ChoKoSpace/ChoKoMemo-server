@@ -23,8 +23,6 @@ type SigninResponseJson struct {
 }
 
 func Signin(w http.ResponseWriter, r *http.Request) {
-	enableCors(&w)
-
 	switch r.Method {
 	default:
 		http.NotFound(w, r)

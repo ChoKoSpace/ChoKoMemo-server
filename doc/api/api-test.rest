@@ -23,28 +23,53 @@ content-type: application/json
 }
 
 ###
-GET {{api-url}}/all-memos
+ {{api-url}}/all-memos
 content-type: application/json
 
 {
-    "userId": "1",
-    "token": "5bd57cdef6df9c8e9cf5aad4230b58a9bae34ca023d6efc009357d838baae2f2"
-}
-
-# DB-TEST
-
-###
-GET {{api-url}}/db-test
-content-type: application/json
-
-{
+    "userId": "{{$dotenv %UserId}}",
+    "token": "{{$dotenv %Token}}"
 }
 
 ###
-POST {{api-url}}/db-test
+GET {{api-url}}/memo
 content-type: application/json
 
 {
-    "Title": "memo-title",
-    "Content": "blah blah"
+    "userId": "{{$dotenv %UserId}}",
+    "token": "{{$dotenv %Token}}",
+    "memoId": 8
+}
+
+###
+POST {{api-url}}/memo
+content-type: application/json
+
+{
+    "userId": "{{$dotenv %UserId}}",
+    "token": "{{$dotenv %Token}}",
+    "title": "memo-title1",
+    "content": "blah blah1"
+}
+
+###
+PUT {{api-url}}/memo
+content-type: application/json
+
+{
+    "userId": "{{$dotenv %UserId}}",
+    "token": "{{$dotenv %Token}}",
+    "memoId": 8,
+    "title": "memo-title (updated)",
+    "content": "blah blah (updated)"
+}
+
+###
+DELETE  {{api-url}}/memo
+content-type: application/json
+
+{
+    "userId": "{{$dotenv %UserId}}",
+    "token": "{{$dotenv %Token}}",
+    "memoIds": [6, 7]
 }

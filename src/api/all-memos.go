@@ -5,22 +5,23 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/ChoKoSpace/ChoKoMemo-server/src/model"
 	"github.com/ChoKoSpace/ChoKoMemo-server/src/session"
 )
-
-type MemoListInfo struct {
-	MemoId int    `json:"memoId"`
-	Title  string `json:"title"`
-}
 
 type GetAllMemoRequestJson struct {
 	UserId string `json:"userId"`
 	Token  string `json:"token"`
 }
 
+type MemoListInfo struct {
+	MemoId int    `json:"memoId"`
+	Title  string `json:"title"`
+}
+
 type GetAllMemoResponseJson struct {
-	Error    *ErrorObject    `json:"error,omitempty"`
-	MemoList *[]MemoListInfo `json:"memoList,omitempty"`
+	Error    *ErrorObject   `json:"error,omitempty"`
+	MemoList []MemoListInfo `json:"memoList"`
 }
 
 func AllMemo(w http.ResponseWriter, r *http.Request) {
@@ -40,20 +41,25 @@ func AllMemo(w http.ResponseWriter, r *http.Request) {
 
 		if session.IsValidToken(Request.UserId, Request.Token) {
 			session.RefreshSession(Request.UserId)
-			//test response
-			countOfMemos := 3
-			var newMemoList = make([]MemoListInfo, countOfMemos)
-			for i := 0; i < countOfMemos; i++ {
-				newMemoList[i].MemoId = i
-				newMemoList[i].Title = "memo-title"
+
+			db := model.GetDB()
+			if db != nil {
+				var count int64
+				db.Model(&model.Memo{}).Where(&model.Memo{UserId: Request.UserId}).Count(&count)
+				memos := make([]model.Memo, count)
+				db.Where(&model.Memo{UserId: Request.UserId}).Find(&memos)
+
+				var i int64
+				for i = 0; i < count; i++ {
+					Response.MemoList = append(Response.MemoList, MemoListInfo{MemoId: int(memos[i].ID), Title: memos[i].Title})
+				}
 			}
-			Response.MemoList = &newMemoList
 		} else {
 			errorObj := ErrorObject{}
 			errorObj.Message = "Invalid token"
 			Response.Error = &errorObj
-			data, _ := json.MarshalIndent(Response, "", "    ")
-			fmt.Fprintf(w, string(data))
 		}
+		data, _ := json.MarshalIndent(Response, "", "    ")
+		fmt.Fprintf(w, string(data))
 	}
 }
