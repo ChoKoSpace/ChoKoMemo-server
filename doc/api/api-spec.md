@@ -123,8 +123,8 @@
         {
             "title": "memo-title",
             "content": "blah blah",
-            "createdDate": "",
-            "lastUpdatedDate": ""
+            "createdAt": "",
+            "updatedAt": ""
         }
 
         // error
