@@ -14,6 +14,7 @@ func GetDB() *gorm.DB {
 	if db == nil {
 		panic("DB is not initialized.")
 	}
+	db.Exec(fmt.Sprintf("USE %s;", config.NAME_DATABASE))
 	return db
 }
 
