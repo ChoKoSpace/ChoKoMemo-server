@@ -40,7 +40,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		salt := make([]byte, 16)
 		_, err := rand.Read(salt)
 		if err != nil {
-			errObj.Message = "Failed to generate salt"
+			errObj.Message = append(errObj.Message, "Failed to generate salt")
 		} else {
 			sha := sha512.New()
 			passwordBytes := append([]byte(Request.Password), salt...)
@@ -55,7 +55,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 			if err := model.GetDB().Create(&newUserInfo).Error; err == nil {
 				Response.IsSuccess = true
 			} else {
-				errObj.Message = err.Error()
+				errObj.Message = append(errObj.Message, err.Error())
 			}
 		}
 

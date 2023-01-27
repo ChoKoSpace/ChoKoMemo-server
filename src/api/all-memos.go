@@ -32,6 +32,7 @@ func AllMemo(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		decoder := json.NewDecoder(r.Body)
 		var Request GetAllMemoRequestJson
+		errorObj := ErrorObject{}
 		decoder.Decode(&Request)
 
 		w.Header().Add("content-type", "application/json")
@@ -55,8 +56,10 @@ func AllMemo(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		} else {
-			errorObj := ErrorObject{}
-			errorObj.Message = "Invalid token"
+			errorObj.Message = append(errorObj.Message, "Invalid token")
+		}
+
+		if len(errorObj.Message) > 0 {
 			Response.Error = &errorObj
 		}
 		data, _ := json.MarshalIndent(Response, "", "    ")

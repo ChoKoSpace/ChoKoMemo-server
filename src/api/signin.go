@@ -30,6 +30,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	case http.MethodPost:
 		decoder := json.NewDecoder(r.Body)
 		var Request SigninRequestJson
+		errorObj := ErrorObject{}
 		decoder.Decode(&Request)
 
 		w.Header().Add("content-type", "application/json")
@@ -51,8 +52,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 
 		//비밀번호가 맞는지 확인
 		if hex.EncodeToString(hash) != targetUser.HashedPassword {
-			errorObj := ErrorObject{}
-			errorObj.Message = "Invalid user"
+			errorObj.Message = append(errorObj.Message, "Invalid user")
 			Response.Error = &errorObj
 		} else {
 			userIdStr := fmt.Sprintf("%d", targetUser.ID)
@@ -61,7 +61,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 			_token, err := session.CreateSession(userIdStr)
 			if err != nil {
 				errorObj := ErrorObject{}
-				errorObj.Message = fmt.Sprintf("Error creating session (%v)", err)
+				errorObj.Message = append(errorObj.Message, fmt.Sprintf("Error creating session (%v)", err))
 				Response.Error = &errorObj
 			} else {
 				Response.Token = &_token

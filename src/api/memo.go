@@ -64,10 +64,10 @@ func GetMemo(w http.ResponseWriter, r *http.Request) {
 			Response.CreatedAt = foundMemo.CreatedAt
 			Response.UpdatedAt = foundMemo.UpdatedAt
 		} else {
-			errorObj.Message = "Not found memo"
+			errorObj.Message = append(errorObj.Message, "Not found memo")
 		}
 	} else {
-		errorObj.Message = "Invalid user"
+		errorObj.Message = append(errorObj.Message, "Invalid user")
 	}
 
 	if len(errorObj.Message) > 0 {
@@ -113,10 +113,10 @@ func PostMemo(w http.ResponseWriter, r *http.Request) {
 			Response.IsSuccess = true
 			Response.MemoId = newMemo.ID
 		} else {
-			errorObj.Message = "Failed to create memo"
+			errorObj.Message = append(errorObj.Message, "Failed to create memo")
 		}
 	} else {
-		errorObj.Message = "Invalid user"
+		errorObj.Message = append(errorObj.Message, "Invalid user")
 	}
 
 	if len(errorObj.Message) > 0 {
@@ -159,11 +159,11 @@ func PutMemo(w http.ResponseWriter, r *http.Request) {
 			if err := row.Updates(model.Memo{Title: Request.Title, Content: Request.Content}).Error; err == nil {
 				Response.IsSuccess = true
 			} else {
-				errorObj.Message = err.Error()
+				errorObj.Message = append(errorObj.Message, err.Error())
 			}
 		}
 	} else {
-		errorObj.Message = "Invalid user"
+		errorObj.Message = append(errorObj.Message, "Invalid user")
 	}
 
 	if len(errorObj.Message) > 0 {
@@ -207,14 +207,14 @@ func DeleteMemo(w http.ResponseWriter, r *http.Request) {
 				if deletedRow.RowsAffected > 0 {
 					Response.DeletedMemoIds = append(Response.DeletedMemoIds, memoId)
 				} else {
-					errorObj.Message = "no data"
+					errorObj.Message = append(errorObj.Message, "no data")
 				}
 			} else {
-				errorObj.Message = err.Error()
+				errorObj.Message = append(errorObj.Message, err.Error())
 			}
 		}
 	} else {
-		errorObj.Message = "Invalid user"
+		errorObj.Message = append(errorObj.Message, "Invalid user")
 	}
 
 	if len(errorObj.Message) > 0 {
