@@ -25,6 +25,12 @@ func InitializeDB() {
 		panic("Failed to connect to the DB")
 	}
 
+	rawDB, err := db.DB()
+	if err != nil {
+		panic(err.Error())
+	}
+	rawDB.SetMaxOpenConns(1)
+
 	db.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s;", config.NAME_DATABASE))
 	db.Exec(fmt.Sprintf("USE %s;", config.NAME_DATABASE))
 
