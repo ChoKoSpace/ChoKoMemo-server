@@ -82,12 +82,14 @@
             - __memoListInfo__: `object`
                 - __memoId__: `number`
                 - __title__: `string`
+                - __updatedAt__: `datetime`
         ```json
         {
             "memoList": [
                 {
                     "memoId": 1,
                     "title": "memo-title",
+                    "updatedAt": "2023-01-22T20:42:10+09:00"
                 }
             ]
         }
@@ -117,8 +119,8 @@
         - __error__: `any`, if error occured
         - __title__: `string`
         - __content__: `string`
-        - __createdDate__: `datetime`
-        - __lastUpdatedDate__: `datetime`
+        - __createdAt__: `datetime`
+        - __updatedAt__: `datetime`
         ```json
         {
             "title": "memo-title",

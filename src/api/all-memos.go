@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/ChoKoSpace/ChoKoMemo-server/src/model"
 	"github.com/ChoKoSpace/ChoKoMemo-server/src/session"
@@ -15,8 +16,9 @@ type GetAllMemoRequestJson struct {
 }
 
 type MemoListInfo struct {
-	MemoId int    `json:"memoId"`
-	Title  string `json:"title"`
+	MemoId    int    `json:"memoId"`
+	Title     string `json:"title"`
+	UpdatedAt string `json:"updatedAt"`
 }
 
 type GetAllMemoResponseJson struct {
@@ -52,7 +54,7 @@ func AllMemo(w http.ResponseWriter, r *http.Request) {
 
 				var i int64
 				for i = 0; i < count; i++ {
-					Response.MemoList = append(Response.MemoList, MemoListInfo{MemoId: int(memos[i].ID), Title: memos[i].Title})
+					Response.MemoList = append(Response.MemoList, MemoListInfo{MemoId: int(memos[i].ID), Title: memos[i].Title, UpdatedAt: memos[i].UpdatedAt.Format(time.RFC3339)})
 				}
 			}
 		} else {
